@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activités enfants 3 ans · Rhône-Alpes</title>
+<style>
+  :root {
+    --bg: #fdf6f0;
+    --card: #ffffff;
+    --ink: #3d3a4a;
+    --ink-soft: #6b6780;
+    --border: #ece6f0;
+    --shadow: 0 3px 14px rgba(90, 70, 120, .08);
+
+    --cremieu: #ffb4a2;
+    --cremieu-bg: #fff0ec;
+    --bourgoin: #a2d2ff;
+    --bourgoin-bg: #e9f4ff;
+    --lyon: #b8e0d2;
+    --lyon-bg: #eafaf3;
+    --annecy: #ffd6a5;
+    --annecy-bg: #fff6e9;
+
+    --accent: #cdb4db;
+    --accent-strong: #9d7ec0;
+    --fav: #ffb703;
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+  }
+
+  header {
+    background: linear-gradient(135deg, #cdb4db 0%, #a2d2ff 50%, #b8e0d2 100%);
+    color: #2f2b3d;
+    padding: 28px 16px 22px;
+    text-align: center;
+  }
+  header h1 {
+    margin: 0 0 6px;
+    font-size: clamp(1.3rem, 4.5vw, 2rem);
+    letter-spacing: -.5px;
+  }
+  header p {
+    margin: 0;
+    font-size: .95rem;
+    opacity: .85;
+  }
+
+  .layout {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 16px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  @media (min-width: 800px) {
+    .layout { grid-template-columns: 1fr 240px; align-items: start; }
+    .sidebar { order: 2; }
+    .main { order: 1; }
+  }
+
+  .sidebar {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+  }
+  @media (min-width: 800px) {
+    .sidebar { position: sticky; top: 16px; }
+  }
+
+  .filter-group + .filter-group { margin-top: 18px; }
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .filter-label {
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--ink-soft);
+    margin: 0 0 2px;
+  }
+
+  .chip {
+    border: 2px solid var(--border);
+    background: #fff;
+    color: var(--ink);
+    padding: 8px 14px;
+    border-radius: 30px;
+    font-size: .88rem;
+    cursor: pointer;
+    transition: all .15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    text-align: left;
+  }
+  .chip:hover { border-color: var(--accent); }
+  .chip.active {
+    background: var(--accent-strong);
+    border-color: var(--accent-strong);
+    color: #fff;
+  }
+  .chip[data-region="cremieu"].active { background: var(--cremieu); border-color: var(--cremieu); color:#5a2e26; }
+  .chip[data-region="bourgoin"].active { background: var(--bourgoin); border-color: var(--bourgoin); color:#1f3f5c; }
+  .chip[data-region="lyon"].active { background: var(--lyon); border-color: var(--lyon); color:#1f4a3a; }
+  .chip[data-region="annecy"].active { background: var(--annecy); border-color: var(--annecy); color:#6b4413; }
+
+  .meta-bar {
+    margin: 0 0 14px;
+    font-size: .9rem;
+    color: var(--ink-soft);
+  }
+  .reset-btn {
+    margin-top: 16px;
+    width: 100%;
+    background: none;
+    border: none;
+    color: var(--accent-strong);
+    cursor: pointer;
+    font-size: .88rem;
+    text-decoration: underline;
+    padding: 0;
+    text-align: left;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 16px;
+    padding-bottom: 40px;
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(90,70,120,.14); }
+
+  .card h2 {
+    font-size: 1.08rem;
+    margin: 0 0 6px;
+    line-height: 1.25;
+  }
+  .card-city { font-size: .82rem; color: var(--ink-soft); margin: 0 0 8px; }
+
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .badge {
+    font-size: .72rem;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .badge-cremieu { background: var(--cremieu-bg); color: #b5482f; }
+  .badge-bourgoin { background: var(--bourgoin-bg); color: #1f5c8c; }
+  .badge-lyon { background: var(--lyon-bg); color: #1f6b4a; }
+  .badge-annecy { background: var(--annecy-bg); color: #a56a1a; }
+  .badge-type { background: #f2eef7; color: #6b5b8a; }
+
+  .card p.desc { font-size: .9rem; margin: 0 0 12px; color: var(--ink); }
+
+  .practical {
+    font-size: .82rem;
+    color: var(--ink-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-bottom: 12px;
+  }
+  .practical span { display: flex; gap: 6px; }
+
+  .details {
+    font-size: .86rem;
+    color: var(--ink);
+    background: #faf7fc;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .practical a { color: var(--accent-strong); }
+
+  .card-actions { margin-top: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn {
+    border: 2px solid var(--accent);
+    background: #fff;
+    color: var(--accent-strong);
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: .82rem;
+    cursor: pointer;
+    transition: all .15s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+  }
+  .btn:hover { background: var(--accent); color: #fff; }
+
+  .empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--ink-soft);
+  }
+  .empty .big { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+
+  footer {
+    background: #efe7f2;
+    padding: 22px 16px;
+    text-align: center;
+    font-size: .85rem;
+    color: var(--ink-soft);
+  }
+  footer a { color: var(--accent-strong); }
+
+  @media print {
+    .sidebar, footer, .card-actions, header p { display: none !important; }
+    body { background: #fff; }
+    .layout { grid-template-columns: 1fr; }
+    .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    .details { display: block !important; }
+    .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Activités pour enfants 3 ans</h1>
+  <p>Région Rhône-Alpes · Crémieu · Bourgoin · Lyon · Annecy</p>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="filter-group" id="region-filters">
+      <span class="filter-label">Régions</span>
+      <button class="chip" data-region="cremieu">Crémieu</button>
+      <button class="chip" data-region="bourgoin">Bourgoin</button>
+      <button class="chip" data-region="lyon">Lyon</button>
+      <button class="chip" data-region="annecy">Annecy</button>
+    </div>
+
+    <div class="filter-group" id="type-filters">
+      <span class="filter-label">Types</span>
+      <button class="chip" data-type="freepark">Parcs gratuits</button>
+      <button class="chip" data-type="animals">Animaux</button>
+      <button class="chip" data-type="indoor">Intérieur (pluie)</button>
+      <button class="chip" data-type="museum">Musées</button>
+      <button class="chip" data-type="pool">Piscines</button>
+    </div>
+
+    <button class="reset-btn" id="reset" hidden>Réinitialiser les filtres</button>
+  </aside>
+
+  <main class="main">
+    <div class="meta-bar">
+      <span id="count"></span>
+    </div>
+    <div class="grid" id="grid"></div>
+  </main>
+</div>
+
+<footer>
+  <p>Dernière mise à jour : <strong>14 septembre 2026</strong></p>
+  <p><a href="https://github.com/alexandrebk/kindergarten" target="_blank" rel="noopener">Voir sur GitHub</a></p>
+</footer>
+
+<script>
+const REGIONS = {
+  cremieu:  { label: "Crémieu",  badge: "badge-cremieu" },
+  bourgoin: { label: "Bourgoin", badge: "badge-bourgoin" },
+  lyon:     { label: "Lyon",     badge: "badge-lyon" },
+  annecy:   { label: "Annecy",   badge: "badge-annecy" },
+};
+
+const TYPE_LABELS = {
+  freepark: "Parc gratuit",
+  animals:  "Animaux",
+  indoor:   "Intérieur",
+  museum:   "Musée",
+  pool:     "Piscine",
+  nature:   "Nature",
+  park:     "Parc",
+};
+
+const ACTIVITIES = [
+  // ── CRÉMIEU ───────────────────────────────────────────────
+  { id:"ludogaea", name:"Parc LudOGaëa", city:"Vézéronce-Curtin", region:"cremieu",
+    types:["animals","park"],
+    desc:"Parc animalier avec petit train et observation des cerfs.",
+    details:"Idéal pour découvrir les animaux en douceur. Le petit train fait le bonheur des tout-petits.",
+    hours:"Voir horaires saison", price:"Payant", drive:"~15 min" },
+
+  { id:"pere-louis", name:"Ferme du Père Louis", city:"Vézéronce", region:"cremieu",
+    types:["animals"],
+    desc:"Autruches, animaux à nourrir et restaurant sur place.",
+    details:"On peut nourrir les animaux et déjeuner sur place — pratique pour une sortie à la journée.",
+    hours:"Voir horaires", price:"Payant", drive:"~15 min" },
+
+  { id:"briska", name:"La Ferme de Briska", city:"Chavanoz", region:"cremieu",
+    types:["animals"],
+    desc:"Caresses et nourrissage des animaux, promenade en poney.",
+    details:"Contact direct avec les animaux + balade en poney, très apprécié à 3 ans.",
+    hours:"Voir horaires", price:"Payant", drive:"~15 min" },
+
+  { id:"patho-calme", name:"La Mini Ferme Path'O Calme", city:"Trept", region:"cremieu",
+    types:["animals"],
+    desc:"Ambiance calme, animaux et zoothérapie.",
+    details:"Endroit paisible axé sur la médiation animale (zoothérapie). Parfait pour un enfant sensible.",
+    hours:"Voir horaires", price:"Payant", drive:"~10 min" },
+
+  { id:"parc-cremieu", name:"Parc Municipal de Crémieu", city:"Crémieu", region:"cremieu",
+    types:["freepark","park"],
+    desc:"Jeux adaptés et bel ombrage.",
+    details:"Attention : parc actuellement fermé — vérifier avant de vous déplacer.",
+    hours:"Fermé (à vérifier)", price:"Gratuit", drive:"Sur place" },
+
+  { id:"vieille-ville", name:"Vieille ville médiévale", city:"Crémieu", region:"cremieu",
+    types:["nature"],
+    desc:"Balade pittoresque dans la cité médiévale.",
+    details:"Jolie promenade à pied dans les ruelles historiques, à combiner avec une autre activité.",
+    hours:"Libre", price:"Gratuit", drive:"Sur place" },
+
+  // ── BOURGOIN-JALLIEU ──────────────────────────────────────
+  { id:"champ-fleuri", name:"Parc Champ-Fleuri", city:"Bourgoin-Jallieu", region:"bourgoin",
+    types:["freepark","pool","park"],
+    desc:"Splash pad, aires de jeux et parcours de motricité.",
+    details:"Le splash pad est parfait les jours de chaleur (prévoir maillot/serviette).",
+    hours:"Libre (splash pad en saison)", price:"Gratuit", drive:"~30 min" },
+
+  { id:"lilattes", name:"Park Lilattes", city:"Bourgoin-Jallieu", region:"bourgoin",
+    types:["freepark","park"],
+    desc:"Grand parc ombragé et gratuit, avec pistes cyclables.",
+    details:"Beaucoup d'espace pour courir et faire du vélo/draisienne. Bon ombrage l'été.",
+    hours:"Libre", price:"Gratuit", drive:"~30 min" },
+
+  { id:"ruy-montceau", name:"Aire de jeux Ruy-Montceau", city:"Ruy-Montceau", region:"bourgoin",
+    types:["freepark","park"],
+    desc:"Aire de jeux bien entretenue, proche de l'autoroute.",
+    details:"Pratique pour une pause sur la route grâce à sa proximité de l'autoroute.",
+    hours:"Libre", price:"Gratuit", drive:"~30 min" },
+
+  { id:"krapa", name:"Krapa Trampoline Park", city:"Bourgoin-Jallieu", region:"bourgoin",
+    types:["indoor"],
+    desc:"Parc de trampolines couvert — solution idéale les jours de pluie.",
+    details:"Vérifier la zone dédiée aux plus petits avant de sauter.",
+    hours:"Mer. + Sam./Dim. 10h–19h", price:"Payant", drive:"~30 min" },
+
+  // ── LYON ──────────────────────────────────────────────────
+  { id:"tete-dor", name:"Parc de la Tête d'Or + Zoo", city:"Lyon", region:"lyon",
+    types:["freepark","animals","park"],
+    desc:"117 ha gratuits : jardin botanique, animaux et immenses espaces.",
+    details:"Le grand incontournable : zoo gratuit, lac, plaine africaine. Prévoir la journée.",
+    hours:"Mi-sept. lun. + mer.–dim. 9h30–17h45", price:"Gratuit", drive:"~45 min" },
+
+  { id:"kidzworld", name:"KIDZ WORLD", city:"Lyon 7e", region:"lyon",
+    types:["indoor"],
+    desc:"Roleplay (pompier, policier, vétérinaire) et atelier pizza.",
+    details:"Activités dès 3 ans, jeux de rôle immersifs. Parfait par temps de pluie.",
+    hours:"Mer. + Sam./Dim. 9h30–19h", price:"Payant", drive:"~45 min" },
+
+  { id:"petites-familles", name:"Les Petites Familles", city:"Lyon 2e", region:"lyon",
+    types:["indoor"],
+    desc:"Ateliers créatifs, jeux et anniversaires.",
+    details:"Espace couvert convivial pour ateliers et jeux libres en semaine.",
+    hours:"Lun.–Ven. 8h–19h", price:"Payant", drive:"~50 min" },
+
+  { id:"befun", name:"Aquaparc BE FUN", city:"Vaulx-en-Velin", region:"lyon",
+    types:["pool"],
+    desc:"Parc aquatique avec obstacles (session ~45 min).",
+    details:"Vérifier l'âge/taille minimum pour les parcours à obstacles avant réservation.",
+    hours:"Sam./Dim. 11h–18h", price:"Payant", drive:"~40 min" },
+
+  { id:"toboggan", name:"Parc Toboggan", city:"Lyon 7e", region:"lyon",
+    types:["freepark","park"],
+    desc:"Toboggan géant (Vague des Remparts) et aires de jeux mixtes.",
+    details:"Grand toboggan très apprécié + aires de jeux, le tout gratuit.",
+    hours:"6h30–20h30", price:"Gratuit", drive:"~45 min" },
+
+  { id:"guignol", name:"Musée Guignol", city:"Vieux Lyon", region:"lyon",
+    types:["museum","indoor"],
+    desc:"Marionnettes lyonnaises (visite 20–30 min).",
+    details:"Visite courte adaptée aux petits, à combiner avec une balade dans le Vieux Lyon.",
+    hours:"Voir horaires", price:"Payant", drive:"~50 min" },
+
+  { id:"illusion", name:"Musée de l'Illusion", city:"Lyon", region:"lyon",
+    types:["museum","indoor"],
+    desc:"Illusions d'optique et photos amusantes.",
+    details:"Très visuel et ludique, on prend de belles photos rigolotes.",
+    hours:"Voir horaires", price:"Payant", drive:"~45 min" },
+
+  { id:"cinema-mini", name:"Musée Cinéma & Miniatures", city:"Vieux Lyon", region:"lyon",
+    types:["museum","indoor"],
+    desc:"Objets de films et miniatures — très visuel.",
+    details:"Décors et objets de cinéma qui captivent le regard des enfants.",
+    hours:"Voir horaires", price:"Payant", drive:"~50 min" },
+
+  // ── ANNECY ────────────────────────────────────────────────
+  { id:"parc-enfants", name:"Parc aux Enfants", city:"Annecy", region:"annecy",
+    types:["freepark","park"],
+    desc:"Le meilleur parc d'Annecy : ombragé, jeux variés, petit train.",
+    details:"Petit train payant en plus. Espace ombragé très complet, ouvert en continu.",
+    hours:"24h/24", price:"Gratuit (train payant)", drive:"~1h15" },
+
+  { id:"enchanted-forest", name:"The Enchanted Forest", city:"Sillingy", region:"annecy",
+    types:["indoor"],
+    desc:"Forêt intérieure avec trampolines et zone 0–2 ans dédiée.",
+    details:"Zone spécifique 0–2 ans + espaces pour les 3 ans. Idéal les jours de pluie.",
+    hours:"Mer. + Sam./Dim. 10h–19h", price:"Payant", drive:"~1h10" },
+
+  { id:"criqparc", name:"Criq'Parc", city:"Saint-Jorioz", region:"annecy",
+    types:["park"],
+    desc:"Structures pour grimper, près de la plage.",
+    details:"Parc de jeux avec structures d'escalade, à combiner avec la plage voisine.",
+    hours:"Mer. + Sam./Dim. 10h–18h", price:"Payant", drive:"~1h20" },
+
+  { id:"raisses", name:"Parc des Raisses", city:"Annecy", region:"annecy",
+    types:["freepark","park","nature"],
+    desc:"Parc verdoyant et calme avec vue sur les montagnes.",
+    details:"Aires de jeux dans un cadre reposant et verdoyant, ouvert en continu.",
+    hours:"24h/24", price:"Gratuit", drive:"~1h15" },
+
+  { id:"playground-lac", name:"Playground (Quai Jules Philippe)", city:"Annecy", region:"annecy",
+    types:["freepark","park"],
+    desc:"Aire de jeux au bord du lac, bien entretenue.",
+    details:"Emplacement idéal au bord du lac, à coupler avec une balade sur les quais.",
+    hours:"24h/24", price:"Gratuit", drive:"~1h15" },
+
+  { id:"minikado", name:"Minikado", city:"Annecy", region:"annecy",
+    types:["indoor"],
+    desc:"Activités douces pensées pour les enfants de 3 ans.",
+    details:"Ambiance calme et adaptée, en matinée uniquement.",
+    hours:"Lun.–Sam. 9h–11h", price:"Payant", drive:"~1h15" },
+
+  { id:"cinema-animation", name:"Musée du Cinéma d'Animation", city:"Annecy", region:"annecy",
+    types:["museum","indoor"],
+    desc:"Musée interactif et gratuit (visite ~1h).",
+    details:"Parcours interactif autour du cinéma d'animation, gratuit.",
+    hours:"Mar.–Dim. 10h–18h", price:"Gratuit", drive:"~1h15" },
+
+  { id:"cite-cinema", name:"Cité Internationale Cinéma Animation", city:"Annecy", region:"annecy",
+    types:["museum","pool","indoor"],
+    desc:"Musée avec un espace eau pour jouer.",
+    details:"Combine découverte du cinéma d'animation et espace eau — pensez à une tenue de rechange.",
+    hours:"Mar.–Dim. 10h–18h", price:"Voir tarifs", drive:"~1h15" },
+
+  { id:"ecomusee-lac", name:"Écomusée du Lac d'Annecy", city:"Sévrier", region:"annecy",
+    types:["museum","indoor"],
+    desc:"Escape game années 1900 pour enfants, à 200 m de la plage.",
+    details:"Escape game adapté aux enfants + plage et piste vélo tout près.",
+    hours:"Mar.–Jeu. 9h30–18h", price:"Payant", drive:"~1h20" },
+
+  { id:"ecomusee-bois", name:"Écomusée Bois et Forêt", city:"Thônes", region:"annecy",
+    types:["museum","nature"],
+    desc:"Ateliers bois, découverte nature et accès aux animaux.",
+    details:"Ateliers et découverte de la nature, visites guidées, contact avec des animaux.",
+    hours:"Visites guidées", price:"Payant", drive:"~1h30" },
+];
+
+// Sites officiels (absent = pas de site propre connu, ex. parcs municipaux)
+const SITES = {
+  ludogaea: "https://ludogaia.fr",
+  "pere-louis": "https://le-pere-louis-autruche.fr",
+  briska: "https://www.lafermedebriska.fr",
+  "patho-calme": "https://pathocalme.fr",
+  krapa: "https://www.krapa-park.fr",
+  "tete-dor": "https://www.lyon.fr/lieu/parcs/parc-de-la-tete-dor",
+  kidzworld: "https://www.kidzworldlyon.com",
+  "petites-familles": "https://www.lespetitesfamilles.fr",
+  befun: "https://aquaparcbefun.fr",
+  guignol: "https://www.gadagne-lyon.fr",
+  illusion: "https://www.museedelillusion.fr",
+  "cinema-mini": "https://www.museeminiatureetcinema.fr",
+  "enchanted-forest": "https://www.laforetenchantee74.fr",
+  criqparc: "https://parc.annecy-lacrique.com",
+  minikado: "https://lemikado.org",
+  "cinema-animation": "https://musees.annecy.fr",
+  "cite-cinema": "https://www.citia.org",
+  "ecomusee-lac": "https://www.ecomusee-lacannecy.com",
+  "ecomusee-bois": "https://ecomusee-bois-foret.com",
+};
+
+// ── State ────────────────────────────────────────────────────
+const state = {
+  region: null,
+  types: new Set(),
+};
+
+// ── Rendering ────────────────────────────────────────────────
+const grid = document.getElementById("grid");
+const countEl = document.getElementById("count");
+const resetBtn = document.getElementById("reset");
+
+function matches(a) {
+  if (state.region && a.region !== state.region) return false;
+  if (state.types.size) {
+    for (const t of state.types) if (!a.types.includes(t)) return false;
+  }
+  return true;
+}
+
+function render() {
+  const list = ACTIVITIES.filter(matches);
+  grid.innerHTML = "";
+
+  if (!list.length) {
+    grid.innerHTML = `<div class="empty">Aucune activité ne correspond.<br>Essayez d'élargir vos filtres.</div>`;
+  } else {
+    for (const a of list) grid.appendChild(cardEl(a));
+  }
+
+  const n = list.length;
+  countEl.textContent = `${n} activité${n > 1 ? "s" : ""} affichée${n > 1 ? "s" : ""}`;
+  const anyFilter = state.region || state.types.size;
+  resetBtn.hidden = !anyFilter;
+}
+
+function cardEl(a) {
+  const el = document.createElement("article");
+  el.className = "card";
+
+  const reg = REGIONS[a.region];
+  const typeBadges = a.types
+    .filter(t => TYPE_LABELS[t])
+    .map(t => `<span class="badge badge-type">${TYPE_LABELS[t]}</span>`)
+    .join("");
+  const query = encodeURIComponent(`${a.name} ${a.city}`);
+  const dirUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent("Crémieu")}&destination=${query}&travelmode=driving`;
+  const site = SITES[a.id];
+
+  el.innerHTML = `
+    <h2>${a.name}</h2>
+    <p class="card-city">${a.city}</p>
+    <div class="badges">
+      <span class="badge ${reg.badge}">${reg.label}</span>
+      ${typeBadges}
+    </div>
+    <p class="desc">${a.desc}</p>
+    <div class="practical">
+      <span><strong>Horaires :</strong> ${a.hours}</span>
+      <span><strong>Prix :</strong> ${a.price}</span>
+      <span><strong>Depuis Crémieu :</strong> ${a.drive} en voiture · <a href="${dirUrl}" target="_blank" rel="noopener">itinéraire</a></span>
+    </div>
+    <div class="details" hidden>${a.details}</div>
+    <div class="card-actions">
+      <button class="btn toggle-details">Plus d'infos ▾</button>
+      ${site ? `<a class="btn" href="${site}" target="_blank" rel="noopener">Site officiel</a>` : ""}
+    </div>
+  `;
+
+  const detailsEl = el.querySelector(".details");
+  const toggle = el.querySelector(".toggle-details");
+  toggle.addEventListener("click", () => {
+    const open = detailsEl.hidden;
+    detailsEl.hidden = !open;
+    toggle.textContent = open ? "Moins d'infos ▴" : "Plus d'infos ▾";
+  });
+
+  return el;
+}
+
+// ── Controls ─────────────────────────────────────────────────
+document.querySelectorAll("#region-filters .chip").forEach(chip => {
+  chip.addEventListener("click", () => {
+    const r = chip.dataset.region;
+    if (state.region === r) { state.region = null; chip.classList.remove("active"); }
+    else {
+      state.region = r;
+      document.querySelectorAll("#region-filters .chip").forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+    }
+    render();
+  });
+});
+
+document.querySelectorAll("#type-filters .chip[data-type]").forEach(chip => {
+  chip.addEventListener("click", () => {
+    const t = chip.dataset.type;
+    if (state.types.has(t)) { state.types.delete(t); chip.classList.remove("active"); }
+    else { state.types.add(t); chip.classList.add("active"); }
+    render();
+  });
+});
+
+resetBtn.addEventListener("click", () => {
+  state.region = null;
+  state.types.clear();
+  document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
